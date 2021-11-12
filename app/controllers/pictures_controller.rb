@@ -1,6 +1,4 @@
 class PicturesController < ApplicationController
-  #extend CarrierWave::Mount
-  #mount_uploader :image, ImageUploader
   #skip_before_action :login_required, only: [:index, :new, :create]
   #後で消す
   before_action :set_blog, only: [:show, :edit, :update, :destroy]
@@ -9,13 +7,17 @@ class PicturesController < ApplicationController
   end
 
   def new
-    @picture = Picture.new
+    if params[:back]
+      @picture = Picture.new(picture_params)
+    else
+      @picture = Picture.new
+    end
   end
 
   def create
     @picture = current_user.pictures.build(picture_params)
     if params[:back]
-      rendar :new
+      render :new
     else
       if @picture.save
         redirect_to pictures_path, notice: "作成しました！"
@@ -40,7 +42,7 @@ class PicturesController < ApplicationController
   end
 
   def destroy
-    @poicture.destroy
+    @picture.destroy
     redirect_to pictures_path, notice:"削除しました"
   end
 
@@ -51,7 +53,7 @@ class PicturesController < ApplicationController
 
   private
   def picture_params
-    params.require(:picture).permit(:image, :content, :user_id)
+    params.require(:picture).permit(:image, :image_cache, :content, :user_id)
   end
 
   def set_blog
