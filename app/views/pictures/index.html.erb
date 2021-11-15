@@ -9,7 +9,7 @@
 <% @pictures.each do |picture| %>
   <tr>
     <td><%= picture.user.name %></td>
-    <td><%= picture.image %></td>
+    <td><%= image_tag picture.image.url %></td>
     <td><%= picture.content %></td>
     <td><%= link_to '詳細を確認する', picture_path(picture.id) %></td>
     <td><%= link_to "ブログを編集する", edit_picture_path(picture.id) %></td>
